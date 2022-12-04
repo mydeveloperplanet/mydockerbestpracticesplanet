@@ -1,0 +1,13 @@
+services:
+  dockerbestpractices:
+    image: mydeveloperplanet/dockerbestpractices:0.0.1-SNAPSHOT
+
+  autoheal:
+    image: willfarrell/autoheal:1.2.0
+    restart: always
+    environment:
+      AUTOHEAL_CONTAINER_LABEL: all
+    volumes:
+      - type: bind
+        source: /var/run/docker.sock
+        target: /var/run/docker.sock
