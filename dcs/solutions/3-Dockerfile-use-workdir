@@ -1,0 +1,18 @@
+# Continue with the previous dockerfile
+# Set the /opt/app directory as WORKDIR and remove the mkdir instruction:
+# WORKDIR /opt/app
+#
+# Remove unnecessary /opt/app references
+#
+# Build the image
+# Run the container
+# Verify it builds and starts successfully
+# You will not notice any difference, only the Dockerfile is more readable
+FROM eclipse-temurin:17.0.7_7-jre-alpine@sha256:dd8238c151293ae6a7c22898ef2f0df2af8a05786aef73ccd3248e73765969ed
+WORKDIR /opt/app
+RUN addgroup --system javauser && adduser -S -s /usr/sbin/nologin -G javauser javauser
+ARG JAR_FILE
+ADD target/${JAR_FILE} app.jar
+RUN chown -R javauser:javauser .
+USER javauser
+CMD ["java", "-jar", "app.jar"]

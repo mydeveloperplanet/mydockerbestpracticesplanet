@@ -1,0 +1,10 @@
+# Continue with the previous dockerfile
+# Set the /opt/app directory as WORKDIR and remove the mkdir instruction:
+# WORKDIR /opt/app
+#
+# Remove unnecessary /opt/app references
+#
+# Build the image
+# Run the container
+# Verify it builds and starts successfully
+# You will not notice any difference, only the Dockerfile is more readable

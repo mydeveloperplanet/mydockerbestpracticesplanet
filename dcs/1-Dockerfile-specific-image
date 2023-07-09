@@ -1,0 +1,15 @@
+# Search the latest eclipse-temurin java 17 jre alpine image on Docker Hub: https://hub.docker.com/
+# Change the base image and add the SHA256 tag
+# It should be like the following but this is an old version:
+# eclipse-temurin:17.0.5_8-jre-alpine@sha256:02c04793fa49ad5cd193c961403223755f9209a67894622e05438598b32f210e
+#
+# Build the image
+# Run the container
+# Verify it builds and starts successfully
+# View the logs and verify that the container is using the latest Java version and verify that the applicatoin is started by root using the command:
+# docker logs dockerbestpractices
+FROM eclipse-temurin:17
+RUN mkdir /opt/app
+ARG JAR_FILE
+ADD target/${JAR_FILE} /opt/app/app.jar
+CMD ["java", "-jar", "/opt/app/app.jar"]

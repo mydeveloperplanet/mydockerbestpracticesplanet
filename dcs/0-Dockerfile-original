@@ -1,0 +1,17 @@
+# Try to build the docker image, execute the following command from the root from the repository
+# docker build . --tag mydeveloperplanet/dockerbestpractices:0.0.1-SNAPSHOT -f dcs/0-Dockerfile-original --build-arg JAR_FILE=mydockerbestpracticesplanet-0.0.1-SNAPSHOT.jar
+#
+# Run the container
+# docker run --rm -p 8080:8080 --name dockerbestpractices -d mydeveloperplanet/dockerbestpractices:0.0.1-SNAPSHOT
+#
+# Verify the container is running: docker ps
+#
+# Invoke the endpoint: curl http://localhost:8080/hello
+# Or just use the browser
+#
+# Stop the container: docker stop dockerbestpractices
+FROM eclipse-temurin:17
+RUN mkdir /opt/app
+ARG JAR_FILE
+ADD target/${JAR_FILE} /opt/app/app.jar
+CMD ["java", "-jar", "/opt/app/app.jar"]

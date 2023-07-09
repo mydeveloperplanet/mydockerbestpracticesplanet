@@ -1,0 +1,19 @@
+# Continue with the previous dockerfile
+# Add a health check:
+# HEALTHCHECK --interval=30s --timeout=3s --retries=1 CMD wget -qO- http://localhost:8080/actuator/health/ | grep UP || exit 1
+#
+# Build the image
+# Run the container
+# Invoke the actuator health endpoint until the status of the container is unhealthy (should do so after 5 consecutive calls)
+#   Invoking the endpoint can be done with the command: curl http://localhost:8080/actuator/health
+#   Checking the status can be seen with: docker ps
+#   Also note, that the container is not restarted
+FROM eclipse-temurin:17.0.7_7-jre-alpine@sha256:dd8238c151293ae6a7c22898ef2f0df2af8a05786aef73ccd3248e73765969ed
+WORKDIR /opt/app
+RUN addgroup --system javauser && adduser -S -s /usr/sbin/nologin -G javauser javauser
+ARG JAR_FILE
+COPY target/${JAR_FILE} app.jar
+RUN chown -R javauser:javauser .
+USER javauser
+HEALTHCHECK --interval=30s --timeout=3s --retries=1 CMD wget -qO- http://localhost:8080/actuator/health/ | grep UP || exit 1
+ENTRYPOINT ["java", "-jar", "app.jar"]

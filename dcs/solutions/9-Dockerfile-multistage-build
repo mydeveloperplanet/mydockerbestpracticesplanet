@@ -1,0 +1,23 @@
+# Build the application in a first build stage using the eclipse-temurin-17-alpine docker image
+# Copy the contents of the repository into the docker image (beware that the source directory must be in the context of 'docker build'
+# This means that you cannot use '../.' but you need to move the Dockerfile one directory level up.
+# Build the application with command: mvn clean package -DskipTests
+#
+# In the second build stage, use the Dockerfile as previously created, but use the jar-file from the first stage
+#
+# Build the image (No need to add the build argument. Why?)
+# docker build . --tag mydeveloperplanet/dockerbestpractices:0.0.1-SNAPSHOT -f 9-Dockerfile-multistage-build
+# Run the container
+FROM maven:3.9.3-eclipse-temurin-17-alpine@sha256:38e7fe344f85a25e88fb15c5588360e439dab00cd4abdb72c11670543075965b AS builder
+WORKDIR /build
+COPY . .
+RUN mvn clean package -DskipTests
+
+FROM eclipse-temurin:17.0.7_7-jre-alpine@sha256:dd8238c151293ae6a7c22898ef2f0df2af8a05786aef73ccd3248e73765969ed
+WORKDIR /opt/app
+RUN addgroup --system javauser && adduser -S -s /usr/sbin/nologin -G javauser javauser
+COPY --from=builder /build/target/mydockerbestpracticesplanet-0.0.1-SNAPSHOT.jar app.jar
+RUN chown -R javauser:javauser .
+USER javauser
+HEALTHCHECK --interval=30s --timeout=3s --retries=1 CMD wget -qO- http://localhost:8080/actuator/health/ | grep UP || exit 1
+ENTRYPOINT ["java", "-jar", "app.jar"]

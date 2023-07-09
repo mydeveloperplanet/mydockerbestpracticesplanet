@@ -1,0 +1,7 @@
+# Continue with the previous dockerfile
+# Use COPY instead of ADD
+#
+# Build the image
+# Run the container
+# Verify it builds and starts successfully
+# You will not notice any difference, only the Docker image will be a bit more secure

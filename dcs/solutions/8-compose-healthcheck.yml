@@ -1,0 +1,28 @@
+# Create a Docker Compose file with 2 services: https://docs.docker.com/compose/
+#   the container for dockerbestpractices
+#   the container which will perform the restart: https://github.com/willfarrell/docker-autoheal
+# run the compose file:
+#  docker compose -f dcs/8-compose-healthcheck.yml up -d
+#
+# Invoke the actuator health endpoint until the status of the container is unhealthy (should do so after 5 consecutive calls)
+#   Invoking the endpoint can be done with the command: curl http://localhost:8080/actuator/health
+#   Checking the status can be seen with: docker ps
+#   Note that the container is restarted (you will notice this because the uptime of the container changes)
+#
+# Stop the containers:
+#  docker compose -f dcs/8-compose-healthcheck.yml down
+services:
+  dockerbestpractices:
+    image: mydeveloperplanet/dockerbestpractices:0.0.1-SNAPSHOT
+    ports:
+      - "127.0.0.1:8080:8080"
+
+  autoheal:
+    image: willfarrell/autoheal:1.2.0
+    restart: always
+    environment:
+      AUTOHEAL_CONTAINER_LABEL: all
+    volumes:
+      - type: bind
+        source: /var/run/docker.sock
+        target: /var/run/docker.sock

@@ -1,0 +1,6 @@
+# Create a multistage build using Spring Boot Layers:
+# https://springframework.guru/why-you-should-be-using-spring-boot-docker-layers/
+#
+# Build the image
+# Run the container
+# Verify whether the application still runs

@@ -1,0 +1,15 @@
+# Continue with the previous dockerfile
+# Add a service account to the Docker image:
+# RUN addgroup --system javauser && adduser -S -s /usr/sbin/nologin -G javauser javauser
+#
+# Change the ownership of the application directory:
+# RUN chown -R javauser:javauser /opt/app
+#
+# Use the service account:
+# USER javauser
+#
+# Build the image
+# Run the container
+# Verify it builds and starts successfully
+# View the logs and verify that the container is started by the service account using the command:
+# docker logs dockerbestpractices

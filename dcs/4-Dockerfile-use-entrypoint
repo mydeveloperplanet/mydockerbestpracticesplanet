@@ -1,0 +1,7 @@
+# Continue with the previous dockerfile
+# Use ENTRYPOINT instead of CMD
+#
+# Build the image
+# Run the container
+# Verify it builds and starts successfully
+# You will not notice any difference

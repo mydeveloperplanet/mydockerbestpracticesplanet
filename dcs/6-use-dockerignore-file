@@ -1,0 +1,11 @@
+# Continue with the previous dockerfile
+# Add a .dockerignore file to the root of the repository excluding all files:
+# **/**
+#
+# Build the Docker image, it will fail, because it will not find the jar-file
+#
+# Include the jar-file:
+# !target/*.jar
+#
+# Build the image
+# You will not notice any difference, creating the Docker image will be slightly faster and you are certain that only intended information can be copied into the Docker image

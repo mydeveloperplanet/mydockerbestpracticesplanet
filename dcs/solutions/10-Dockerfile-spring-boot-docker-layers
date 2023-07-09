@@ -1,0 +1,23 @@
+# Create a multistage build using Spring Boot Layers:
+# https://springframework.guru/why-you-should-be-using-spring-boot-docker-layers/
+#
+# Build the image
+# Run the container
+# Verify whether the application still runs
+FROM eclipse-temurin:17.0.7_7-jre-alpine@sha256:dd8238c151293ae6a7c22898ef2f0df2af8a05786aef73ccd3248e73765969ed AS builder
+WORKDIR application
+ARG JAR_FILE
+COPY target/${JAR_FILE} app.jar
+RUN java -Djarmode=layertools -jar app.jar extract
+
+FROM eclipse-temurin:17.0.7_7-jre-alpine@sha256:dd8238c151293ae6a7c22898ef2f0df2af8a05786aef73ccd3248e73765969ed
+WORKDIR /opt/app
+RUN addgroup --system javauser && adduser -S -s /usr/sbin/nologin -G javauser javauser
+COPY --from=builder application/dependencies/ ./
+COPY --from=builder application/spring-boot-loader/ ./
+COPY --from=builder application/snapshot-dependencies/ ./
+COPY --from=builder application/application/ ./
+RUN chown -R javauser:javauser .
+USER javauser
+HEALTHCHECK --interval=30s --timeout=3s --retries=1 CMD wget -qO- http://localhost:8080/actuator/health/ | grep UP || exit 1
+ENTRYPOINT ["java", "org.springframework.boot.loader.JarLauncher"]
