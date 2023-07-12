@@ -1,3 +1,7 @@
+# Build the jar-file: mvn clean verify
+# or
+# download the jar-file and copy it in the target directory: https://github.com/mydeveloperplanet/mydockerbestpracticesplanet/releases/tag/V0.0.1-SNAPSHOT
+#
 # Try to build the docker image, execute the following command from the root from the repository
 # docker build . --tag mydeveloperplanet/dockerbestpractices:0.0.1-SNAPSHOT -f dcs/0-Dockerfile-original --build-arg JAR_FILE=mydockerbestpracticesplanet-0.0.1-SNAPSHOT.jar
 #
